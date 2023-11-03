@@ -9,13 +9,15 @@ const Shop = () => {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([])
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(0);
     const { count } = useLoaderData();
     const numberOfPage = Math.ceil(count / itemsPerPage);
 
     /**
      * DONE 1: get the total number of products
      * DONE 2: number of items per page dynamic
-     * TODO 3: define the length of data per page
+     * DONE 3: define the length of data per page
+     * TODO 4: get the current page
      */
 
     /* const pages = [];
@@ -30,6 +32,18 @@ const Shop = () => {
     const handleItemsPerPage = (e) => {
         const val = parseInt(e.target.value);
         setItemsPerPage(val);
+        setCurrentPage(0);
+    }
+
+    const handlePreviousPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    }
+    const handleNextPage = () => {
+        if (currentPage < pages.length - 1) {
+            setCurrentPage(currentPage + 1);
+        }
     }
 
     useEffect(() => {
@@ -106,9 +120,16 @@ const Shop = () => {
                 </Cart>
             </div>
             <div className="pagination">
+                <p>Current page: {currentPage}</p>
+                <button onClick={handlePreviousPage}>Prev</button>
                 {
-                    pages.map(page => <button>{page + 1}</button>)
+                    pages.map(page => <button
+                        key={page}
+                        className={currentPage === page && 'selected'}
+                        onClick={() => setCurrentPage(page)}>{page}</button>)
                 }
+
+                <button onClick={handleNextPage}>Next</button>
                 <select value={itemsPerPage} onChange={handleItemsPerPage} name="" id="">
                     <option value="5">5</option>
                     <option value="10">10</option>
